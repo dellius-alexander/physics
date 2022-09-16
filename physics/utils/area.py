@@ -519,7 +519,7 @@ def _compound_region2_(fx, gx, lower_bound, upper_bound,
         else:
             _c_ = e
             break
-    if fx.subs({x: _a_}) > gx.subs({x: _a_}) and gx.subs({x: _b_}) > fx.subs({x: _b_}):
+    if fx.subs({'x': _a_}) > gx.subs({'x': _a_}) and gx.subs({'x': _b_}) > fx.subs({'x': _b_}):
         _area_1 = Integral(fx - gx, (_v_, _a_, _c_))
         _area_1_sol_ = _area_1.doit()
         _area_2 = Integral(gx - fx, (_v_, _c_, _b_))

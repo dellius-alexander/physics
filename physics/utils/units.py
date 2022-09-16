@@ -58,10 +58,10 @@ approximate geometric mean of the range  (3×10^2,1×10^5)  is  6×10^3.
     # ---------------------------------------------------------------------
 
     # ---------------------------------------------------------------------
-    num_of_trailing_zeros_L = trailing_zeros(L)
-    num_of_trailing_zeros_H = trailing_zeros(H)
-    mantissas_L = int(str(L).rsplit('0')[0])
-    mantissas_H = int(str(H).rsplit('0')[0])
+    num_of_trailing_zeros_L = trailing_zeros(c)
+    num_of_trailing_zeros_H = trailing_zeros(d)
+    mantissas_L = int(str(c).rsplit('0')[0])
+    mantissas_H = int(str(d).rsplit('0')[0])
     # Consider the range  (3×10^2,1×10^4). 
     # first average the mantissas 3 and 1,  (1/2)(3+1)=2
     mantissas_avg = floor((1 / 2) * (mantissas_L + mantissas_H))
