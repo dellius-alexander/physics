@@ -14,7 +14,7 @@
 # This is free software, and you are welcome to redistribute it
 # under certain conditions; type `show c' for details.
 ##########################################################################
-# from physics.utils import converter
+from physics.utils import converter
 from physics.motion_3d import motion_3d as m3d
 from sympy import symbols
 
@@ -22,10 +22,12 @@ from sympy import symbols
 ##########################################################################
 # GLOBAL Symbols
 ##########################################################################
-def test_3d_motion():
-    values = m3d.variables_3d()
-    x = symbols('x')
+
+##########################################################################
+def motion_ed_test_1():
     # variables: {'R': 90, 'g': 9.8, 'y_0': 0, 'x_0': 0, 'angle': 70})
+    x = symbols('x')
+    values = m3d.variables_3d()
     values['g'] = 9.8
     values['y_0'] = 0
     values['x_0'] = 0
@@ -35,20 +37,18 @@ def test_3d_motion():
     values = m3d.horizontal_range(values)
     values = m3d.trajectory(values)
     values = m3d.time_of_flight(values)
-    print(values)
-    # print(converter.dict_to_json_string(values))
-    assert values['v_0'] == 37.0425217188420
-    assert values['y'] == (- 0.0305275268828291 * (x ** 2) + 2.74747741945462 * x)
-    values = m3d.variables_3d()
-    values['R'] = 90
-    values['g'] = 9.8
-    values['y_0'] = 0
-    values['x_0'] = 0
+    # print(values)
+    print(converter.dict_to_json_string(values))
+    assert str(values['v_0']) == '37.042522'
+    assert str(values['y']) == str(-0.0305275263976766 * x ** 2 + 2.74747741945462 * x)
+    assert str(values['tof']) == str(5.85038012396096)
+    # next example
     values['angle'] = 30
     values = m3d.horizontal_range(values)
     values = m3d.trajectory(values)
     values = m3d.time_of_flight(values)
-    print(values)
-    # print(converter.dict_to_json_string(values))
-    assert values['v_0'] == 31.9130987973669
-    assert values['y'] == (- 0.00641500299099584 * (x ** 2) + 0.577350269189626 * x)
+    # print(values)
+    print(converter.dict_to_json_string(values))
+    assert str(values['v_0']) == '31.913099'
+    assert str(values['y']) == str(-0.00641500291318291 * x ** 2 + 0.577350269189626 * x)
+    assert str(values['tof']) == str(-6.43492878078208)

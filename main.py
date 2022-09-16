@@ -43,13 +43,7 @@ if __name__ == '__main__':
     values = m3d.horizontal_range(values)
     values = m3d.trajectory(values)
     values = m3d.time_of_flight(values)
-    values = m3d.variables_3d()
     print(converter.dict_to_json_string(values))
-
-    values['R'] = 90
-    values['g'] = 9.8
-    values['y_0'] = 0
-    values['x_0'] = 0
     values['angle'] = 30
     values = m3d.horizontal_range(values)
     values = m3d.trajectory(values)

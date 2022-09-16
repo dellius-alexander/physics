@@ -34,7 +34,8 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest
+           pytest tests/testing3dmotion.py
+
 
       - name: Build package
         run: python -m build

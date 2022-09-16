@@ -22,27 +22,13 @@ from sympy import init_printing, symbols, sqrt, \
 import re
 import mpmath as m
 import sys
-from ..utils.converter import dict_to_json_string
 
-# from ..utils import __logger
-#
-# log = __logger.log("physics", '..logging.conf')
-# # 'application' code
-# log.debug('debug message')
-# log.info('info message')
-# log.warning('warn message')
-# log.error('error message')
-# log.critical('critical message')
 ##########################################################################
 init_printing(use_unicode=True)
 
 
 ##########################################################################
 # GLOBAL Symbols
-# x, y, z, t, i, k, j, v, a, b, c, m, s, y_0, x_0, v_0y, v_0x, v_y, v_x, d, v__2_y, v__2_0y, g = \
-# symbols('x, y, z, t, i, k, j, v, a, b, c, m, s, y_0, x_0, v_0y, v_0x, v_y, v_x, d, v__2_y, v__2_0y, g', cls=Symbol)
-# f, h = symbols('f, h', cls=Function)
-
 
 ##########################################################################
 def acceleration_vector(func=Function, sym=Symbol, time=Number):
@@ -281,11 +267,15 @@ def trajectory(values={}):
 def horizontal_range(values={}):
     if not isinstance(values['R'], Symbol) and isinstance(values['v_0'], Symbol):
         values['v_0'] = sqrt((values['R'] * values['g']) / m.sin(2 * m.radians(values['angle'])))
+        if isinstance(values['v_0'], Number):
+            values['v_0'] = round(values['v_0'], 6)
         print("Solving for v_0:")
         print('\nInitial velocity:=> v_0 =')
         pprint(values['v_0'])
     elif isinstance(values['R'], Symbol) and not isinstance(values['v_0'], Symbol):
         values['R'] = ((values['v_0'] ** 2) * m.sin(2 * m.radians(values['angle']))) / values['g']
+        if isinstance(values['v_0'], Number):
+            values['R'] = round(values['R'], 6)
         print("Solving for R: ")
         print('\nRange :=> R =')
         pprint(values['R'])
