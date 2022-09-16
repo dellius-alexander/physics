@@ -31,21 +31,21 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-#      - name: Test with pytest
-#        run: |
-#           pytest tests/testing3dmotion.py
-#
-#
-#      - name: Build package
-#        run: python -m build
-#
-#      - name: Upload pytest test results
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: pytest-results-${{ matrix.python-version }}
-#          path: junit/test-results-${{ matrix.python-version }}.xml
-#        # Use always() to always run this step to publish test results when there are test failures
-#        if: ${{ always() }}
+      - name: Test with pytest
+        run: |
+           pytest tests/testing3dmotion.py
+
+
+      - name: Build package
+        run: python -m build
+
+      - name: Upload pytest test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: junit/test-results-${{ matrix.python-version }}.xml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
 
 #      # Please see for more information on how to get API tokens to publish package at: https://pypi.org/help/#apitoken
 #      - name: Publish package

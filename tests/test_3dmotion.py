@@ -24,7 +24,7 @@ from sympy import symbols
 ##########################################################################
 
 ##########################################################################
-def motion_ed_test_1():
+def test_3d_motion_1():
     # variables: {'R': 90, 'g': 9.8, 'y_0': 0, 'x_0': 0, 'angle': 70})
     x = symbols('x')
     values = m3d.variables_3d()
@@ -42,8 +42,17 @@ def motion_ed_test_1():
     assert str(values['v_0']) == '37.042522'
     assert str(values['y']) == str(-0.0305275263976766 * x ** 2 + 2.74747741945462 * x)
     assert str(values['tof']) == str(5.85038012396096)
-    # next example
+
+
+def test_3d_motion_2():
+    # variables: {'R': 90, 'g': 9.8, 'y_0': 0, 'x_0': 0, 'angle': 70})
+    x = symbols('x')
+    values = m3d.variables_3d()
     values['angle'] = 30
+    values['g'] = 9.8
+    values['y_0'] = 0
+    values['x_0'] = 0
+    values['R'] = 90
     values = m3d.horizontal_range(values)
     values = m3d.trajectory(values)
     values = m3d.time_of_flight(values)
