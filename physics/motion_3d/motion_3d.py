@@ -22,6 +22,9 @@ from sympy import init_printing, symbols, sqrt, \
 import re
 import mpmath as m
 import sys
+import types
+from ..utils.converter import dict_to_json_string
+
 
 ##########################################################################
 init_printing(use_unicode=True)
@@ -91,9 +94,6 @@ def magnitude_func(func=Function or list, p=2):
     return magnitude
 
 
-######################################################################
-
-
 ##########################################################################
 def init_y_velocity(velocity, degree):
     try:
@@ -109,38 +109,95 @@ def init_y_velocity(velocity, degree):
 
 
 ##########################################################################
-def vertical_displacement(func=Function,
-                          __values={}
-                          ):
-    f = func
-    # pprint(f'\nf(y) = {f}\n')
-    for k, v in zip(__values.keys(), __values.values()):
-        f = f.subs(k, v)
-    if isinstance(__values['v_0y'], Symbol) and isinstance(__values['v_0'], (Number, float, int)):
-        __values['v_0y'] = __values['v_0'] * m.sin(m.radians(__values['angle']))
-    if isinstance(__values['y'], Symbol):
-        __values['y'] = (__values['v_0y'] ** 2) / (2 * __values['g'])
-    f = f.subs(__values)
-    pprint(f)
-    if len(solve(f, __values['t'])) != 0:
-        __values['t'] = solve(f, __values['t'])[1]
-    else:
-        __values['t'] = __values['v_0y'] / __values['g']
-    if isinstance(__values['v_y'], Symbol) and isinstance(__values['t'], (Number, float, int)):
-        __values['v_y'] = __values['v_0y'] - __values['g'] * __values['t']
-    return __values
+def vertical_displacement(values={}):
+    if isinstance(values['v_0y'], Symbol) and isinstance(values['angle'], Number):
+        values['v_0y'] = values['v_y'] * m.sin(m.radians(values['angle']))
+        if isinstance(values['v_0y'], Symbol):
+            values['v_0y'] = values['g'] * values['t'] + values['v_y']
+        if isinstance(values['v_0y'], Symbol):
+            values['v_0y'] = (values['t'] * values['v_y'] +
+                              2.0 * values['y'] - 2.0 * values['y_0']) / values['t']
+        if isinstance(values['v_0y'], Symbol):
+            values['v_0y'] = (values['t'] * values['v_y'])
+        if isinstance(values['v_0y'], Symbol):
+            values['v_0y'] = sqrt(2.0 * values['g'] * values['y'] - 2.0 *
+                                  values['g'] * values['y_0'] + (values['v_y'] ** 2))
+    if isinstance(values['v_0y'], Number) and isinstance(values['angle'], Number) \
+            and isinstance(values['v_0'], Symbol):
+        values['v_0'] = values['v_0y'] / m.sin(m.radians(values['angle']))
+        if isinstance(values['v_0'], Symbol):
+            values['v_0'] = values['v_x'] / m.cos(m.radians(values['angle']))
+    if isinstance(values['y'], Symbol) and isinstance(values['v_0y'], Number):
+        values['y'] = sqrt((values['v_y'] ** 2) / (2 * values['g']))
+        if isinstance(values['y'], Symbol) and isinstance(values['v_0y'], Number):
+            values['y'] = sqrt((values['v_0y'] ** 2) / (2 * values['g']))
+            values['y'].subs(values)
+    if isinstance(values['y'], Number) and isinstance(values['y_0'], Number) \
+            and isinstance(values['v_0y'], Number) and isinstance(values['v_y'], Number) \
+            and isinstance(values['t'], Symbol):
+        values['t'] = (2.0 * (values['y'] - values['y_0'])) / (values['v_0y'] + values['v_y'])
+        if isinstance(values['v_0y'], Number) and isinstance(values['g'], Number) \
+                and isinstance(values['t'], Symbol):
+            values['t'] = values['v_0y'] / values['g']
+    if isinstance(values['v_y'], Symbol) and isinstance(values['t'], Number):
+        values['v_y'] = values['v_0y'] - values['g'] * values['t']
+    if values['counter'] < 300:
+        values['counter'] += values['counter'] + 1
+
+        return vertical_displacement(values)
+    return values
 
 
 ##########################################################################
-def horizontal_displacement(func=Function,
-                            __values={}
-                            ):
-    f = func
-    for k, v in zip(__values.keys(), __values.values()):
-        f = f.subs(k, v)
-    __values['v_x'] = __values['v_0'] * m.cos(m.radians(__values['angle']))
-    __values['x'] = __values['v_x'] * __values['t']
-    return __values
+def horizontal_displacement(values={}):
+    # print(__values)
+    if isinstance(values['v_0'], Number) and isinstance(values['angle'], (Number, float)):
+        values['v_x'] = values['v_0'] * m.cos(m.radians(values['angle']))
+    if isinstance(values['v_0'], (Number, float)) and isinstance(values['angle'], (Number, float)):
+        values['v_x'] = values['v_x'] / values['t']
+    if isinstance(values['x'], Symbol):
+        values['x'] = values['x_0'] + values['v_x'] * values['t']
+    if values['counter'] < 300:
+        values['counter'] += values['counter'] + 1
+        return projectile(values)
+    return values
+
+
+##########################################################################
+def projectile(
+        values={}):
+    """
+    Solver for projectile motion.
+
+    :param values: a map of linear components
+    :return:
+    """
+    # print(dict_to_json_string(values))
+    values = update_map(
+        vertical_displacement(values),
+        values)
+    # print(dict_to_json_string(values))
+    # log.info("\n%s", dict_to_json_string(values))
+    values = update_map(
+        horizontal_displacement(values),
+        values)
+    if isinstance(values['v_y'], Number) and isinstance(values['v_x'], Number) \
+            and isinstance(values['v'], Symbol):
+        values['v'] = sqrt((values['v_x'] ** 2) + (values['v_y'] ** 2))
+        values['theta_v'] = direction(values['v_x'], values['v_y'])  # direction of r
+    if isinstance(values['y'], Number) and isinstance(values['x'], Number):
+        values['r']= sqrt((values['x'] ** 2) + (values['y'] ** 2))
+        values['theta_r'] = direction(values['x'], values['y'])  # direction of r
+    # values['v_0x'] = values['v_x']
+    # return if we ready
+    if isinstance(values['x'], Number) and isinstance(values['y'], Number) \
+            and isinstance(values['v'], Number) and isinstance(values['v_0x'], Number) \
+            and isinstance(values['v_0y'], Number):
+        return values
+    if values['counter'] < 300:
+        values['counter'] += values['counter'] + 1
+        return projectile(values)
+    return values
 
 
 ##########################################################################
@@ -196,69 +253,28 @@ def update_map(map1={}, map2={}):
 
 
 ##########################################################################
-def projectile(
-        xfunc=Function,
-        yfunc=Function,
-        values={}):
-    """
-    Solver for projectile motion.
-
-    :param xfunc: f(x)
-    :param yfunc: f(y)
-    :param values: a map of linear components
-    :return:
-    """
-
-    print("\nVertical component: ")
-    pprint(yfunc)
-    print("\nHorizontal component: ")
-    pprint(xfunc)
-    # print(dict_to_json_string(values))
-    values = update_map(
-        vertical_displacement(
-            yfunc,
-            __values=values),
-        values)
-
-    # log.info("\n%s", dict_to_json_string(values))
-    values = update_map(
-        horizontal_displacement(
-            xfunc,
-            __values=values),
-        values)
-    if isinstance(values['v_y'], (Number, float, int)) and values['v_y'] != 0 and \
-            isinstance(values['v_x'], (Number, float, int)) and values['v_x'] != 0:
-        f = values['v_x'] * values['i'] + values['v_y'] * values['j']
-        # pprint(f)
-        values['v'] = magnitude_func(func=f)  # magnitude of vector r
-        values['\\theta_{v}'] = direction(values['v_x'], values['v_y'])  # direction of r
-    if isinstance(values['y'], (Number, float, int)) and values['y'] != 0 and \
-            isinstance(values['x'], (Number, float, int)) and values['x'] != 0:
-        f = values['x'] * values['i'] + values['y'] * values['j']
-        # pprint(f)
-        values['s'] = magnitude_func(func=f)  # magnitude of vector r
-        values['\\theta_{s}'] = direction(values['x'], values['y'])  # direction of r
-    values['v_0x'] = values['v_x']
-    # print(f"\nThe magnitude of the final velocity r is: {f}\n")
-    # pprint(f)
-    return values
-
-
-##########################################################################
 def time_of_flight(values={}):
-    values['tof'] = (2 * (values['v_0'] * m.sin(values['angle']))) / values['g']
-    print("\nTime of Flight:=> TOF =  ")
-    values['tof'] = values['tof'].subs(values)
-    pprint(values['tof'])
+    if isinstance(values['v_0'], Number):
+        values['tof'] = (2 * (values['v_0'] * m.sin(values['angle']))) / values['g']
+        print("\nTime of Flight:=> TOF =  ")
+        values['tof'] = values['tof'].subs(values)
+        pprint(values['tof'])
+    if values['counter'] < 100:
+        values['counter'] += values['counter'] + 1
+        time_of_flight(values)
+    pprint(values['y'])
     return values
 
 
 ##########################################################################
 def trajectory(values={}):
-    values['y'] = (m.tan(m.radians(values['angle'])) * values['x']) - (values['g'] /
+    if not isinstance(values['v_0'], Symbol) and isinstance(values['x'], Number) \
+            and isinstance(values['angle'], Number) and isinstance(values['g'], Number):
+        values['y'] = (m.tan(m.radians(values['angle'])) * values['x']) - (values['g'] /
                   (2 * (values['v_0'] * m.cos(m.radians(values['angle']))) ** 2)) * (values['x'] ** 2)
     print("\nTrajectory:=> y =  ")
-    values['y'] = values['y'].subs(values)
+    if isinstance(values['y'], Symbol):
+        values['y'] = values['y'].subs(values)
     pprint(values['y'])
     return values
 
@@ -267,25 +283,31 @@ def trajectory(values={}):
 def horizontal_range(values={}):
     if not isinstance(values['R'], Symbol) and isinstance(values['v_0'], Symbol):
         values['v_0'] = sqrt((values['R'] * values['g']) / m.sin(2 * m.radians(values['angle'])))
+        if isinstance(values['v_0'], Symbol):
+            values['v_0'] = sqrt((values['R'] * values['g']) / m.sin(2 * m.radians(values['angle'])))
         if isinstance(values['v_0'], Number):
             values['v_0'] = round(values['v_0'], 6)
         print("Solving for v_0:")
         print('\nInitial velocity:=> v_0 =')
         pprint(values['v_0'])
-    elif isinstance(values['R'], Symbol) and not isinstance(values['v_0'], Symbol):
+    if isinstance(values['R'], Symbol) and not isinstance(values['v_0'], Symbol):
         values['R'] = ((values['v_0'] ** 2) * m.sin(2 * m.radians(values['angle']))) / values['g']
-        if isinstance(values['v_0'], Number):
+        if isinstance(values['R'], Number):
             values['R'] = round(values['R'], 6)
         print("Solving for R: ")
         print('\nRange :=> R =')
         pprint(values['R'])
+    if values['counter'] < 100:
+        values['counter'] += values['counter'] + 1
+        return horizontal_range(values)
+    values['counter'] = 1
     return values
 
 
 ##########################################################################
 def variables_3d() -> dict:
     x, x_0, y, y_0, z, z_0, v, v_0, v_y, v_0y, v_x, v_0x, i, j, k, t, r, g, R, tof, theta = \
-        symbols('x, x_0, y, y_0, z, z_0, v, v_0, v_y, v_0y, v_x, v_0x, i, j, k, t, r, g, R, tof, theta')
+        symbols('x, x_0, y, y_0, z, z_0, v, v_0, v_y, v_0y, v_x, v_0x, i, j, k, t, r, g, R, tof, theta', cls=Symbol)
     return dict({
         'R': R,  # range
         'r': r,
@@ -308,7 +330,8 @@ def variables_3d() -> dict:
         't': t,
         'angle': theta,  # angle of elevation
         'tof': tof,
-        'theta': theta
+        'theta': theta,
+        'counter': 0
     })
 
 
