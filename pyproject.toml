@@ -21,7 +21,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "physics"
-version = "0.0.1"
+version = "0.1.1"
 authors = [
   { name="Dellius Alexander", email="info@hyfisolutions.com" },
 ]
