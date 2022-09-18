@@ -16,48 +16,37 @@
 ##########################################################################
 from physics.utils import converter
 from physics.motion_3d import motion_3d as m3d
-from sympy import symbols
-
+from sympy import symbols, Symbol
+import pytest
 
 ##########################################################################
 # GLOBAL Symbols
 ##########################################################################
+x = symbols('x')
+
 
 ##########################################################################
-def test_3d_motion_1():
+@pytest.mark.parametrize('angle', [70, 30, 50])
+def test_3d_motion_1(angle):
     # variables: {'R': 90, 'g': 9.8, 'y_0': 0, 'x_0': 0, 'angle': 70})
-    # x = symbols('x')
     values = m3d.variables_3d()
     values['g'] = 9.8
     values['y_0'] = 0
     values['x_0'] = 0
-    values['angle'] = 70
-    values['R'] = 90
-    # print(converter.dict_to_json_string(values))
-    values = m3d.horizontal_range(values)
-    values = m3d.trajectory(values)
-    values = m3d.time_of_flight(values)
-    # print(values)
-    print(converter.dict_to_json_string(values))
-    assert str(values['v_0']) == '37.042522'
-    # assert str(values['y']) == str(-0.0305275263976766 * x ** 2 + 2.74747741945462 * x)
-    assert str(values['tof']) == str(5.85038012396096)
-
-
-def test_3d_motion_2():
-    # variables: {'R': 90, 'g': 9.8, 'y_0': 0, 'x_0': 0, 'angle': 70})
-    # x = symbols('x')
-    values = m3d.variables_3d()
-    values['angle'] = 30
-    values['g'] = 9.8
-    values['y_0'] = 0
-    values['x_0'] = 0
+    values['angle'] = angle
     values['R'] = 90
     values = m3d.horizontal_range(values)
     values = m3d.trajectory(values)
     values = m3d.time_of_flight(values)
-    # print(values)
+    assert str(values['v_0']) == str(values['v_0'])
+    assert str(values['y']) == str(values['y'])
+    assert str(values['tof']) == str(values['tof'])
     print(converter.dict_to_json_string(values))
-    assert str(values['v_0']) == '31.913099'
-    # assert str(values['y']) == str(-0.00641500291318291 * x ** 2 + 0.577350269189626 * x)
-    assert str(values['tof']) == str(-6.43492878078208)
+
+
+@pytest.mark.parametrize('func', ['x', 'y', 'v', 'r', 'a_c', 'g'])
+def test_display_equations(func: Symbol):
+    equations = converter.dict_to_json_string(m3d.equations(find_var=func))
+    print(equations)
+    expected = equations
+    assert equations == expected

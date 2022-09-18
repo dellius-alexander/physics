@@ -15,11 +15,12 @@
 # under certain conditions; type `show c' for details.
 ##########################################################################
 
+from typing import List, Set, Dict, Tuple, Optional, Any
 import json
 import math as m
 import sys
-
-from sympy import init_printing, Number, Symbol
+from pandas.io.formats import string
+from sympy import init_printing, Number, Symbol, Function
 
 init_printing(pretty_print=True)
 
@@ -32,7 +33,7 @@ class Memoize:
         self.memo = {}
 
     def __call__(self, *args):
-        if not args in self.memo:
+        if args not in self.memo:
             self.memo[args] = self.f(*args)
         # Warning: You may wish to do a deepcopy here if returning objects
         return self.memo[args]
@@ -116,40 +117,50 @@ def scientific_notation(num):
 
 
 #####################################################################
-def dict_to_json_string(dict_map={}):
-    try:
-        json_map = {}
-        for k, v in zip(dict_map.keys(), dict_map.values()):
-            if not isinstance(v, (str, dict, list, tuple)) or isinstance(v, (Symbol, float, int, str)):
-                json_map[f'{k}'] = str(v)
-            else:
-                json_map[f'{k}'] = v
+def dict_to_json_string(dict_map: Dict or map or str) -> object:
+    # try:
+    json_array = {}
+    __json = str
+    if isinstance(dict_map, (dict, map, list)):
+        if isinstance(dict_map, dict):
+            for k, v in zip(dict_map.keys(), dict_map.values()):
+                # print(k, v)
+                if isinstance(v, list):
+                    arr_list = {}
+                    for n, i in enumerate(v):
+                        # print(n, i)
+                        arr_list[f'{n}'] = str(i)
+                    json_array[f'{k}'] = arr_list
+                else:
+                    json_array[f'{k}'] = str(v)
 
-        __json = json.dumps(json_map,
-                            skipkeys=False,
-                            ensure_ascii=True,
-                            check_circular=True,
-                            allow_nan=True,
-                            cls=json.JSONEncoder,
-                            indent=4,
-                            separators=(',', ':'),
-                            sort_keys=True,
-                            default=None)
+            __json = json.dumps(json_array,
+                                skipkeys=False,
+                                ensure_ascii=True,
+                                check_circular=True,
+                                allow_nan=True,
+                                cls=json.JSONEncoder,
+                                indent=4,
+                                separators=(',', ':'),
+                                sort_keys=True,
+                                default=Function)
+
+        elif isinstance(dict_map, list):
+            arr_list = {}
+            for n, i in enumerate(dict_map):
+                # print(n, i)
+                arr_list[f'{n}'] = str(i)
+
+            __json = json.dumps(arr_list,
+                                skipkeys=False,
+                                ensure_ascii=True,
+                                check_circular=True,
+                                allow_nan=True,
+                                cls=json.JSONEncoder,
+                                indent=4,
+                                separators=(',', ':'),
+                                sort_keys=True,
+                                default=Function)
         return __json
-    except Exception as e:
-        tb = sys.exc_info()[2]
-        print(f'Something went wrong with: \n{e.with_traceback(tb)}')
-
-#####################################################################
-# if __name__ == "__main__":
-#     # pprint(rad_to_deg(m.pi / 2))
-#     # pprint(m.degrees(m.pi / 2))
-#     # pprint(deg_to_rad(90))
-#     # pprint(m.radians(90.0))
-#     print(base_log10(
-#         31540000
-#     ))
-#
-#     scientific_notation(31540000)
-#
-#     print(f'\N{GREEK SMALL LETTER GAMMA}=1 t/m\N{SUPERSCRIPT THREE}')
+    else:
+        return dict_map
