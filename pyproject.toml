@@ -9,7 +9,7 @@
 # GNU General Public License for more details.
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-# physics_2211  Copyright (C) 2022  Dellius Alexander
+# physics_app  Copyright (C) 2022  Dellius Alexander
 # This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 # This is free software, and you are welcome to redistribute it
 # under certain conditions; type `show c' for details.
@@ -21,29 +21,29 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "physics"
-version = "0.1.1"
+version = "1.1"
 authors = [
   { name="Dellius Alexander", email="info@hyfisolutions.com", school="Clayton State University", Major="Computer Science"},
 ]
 description = """
-      \"Physics is devoted to the understanding of all natural phenomena.
-      In physics, we try to understand physical phenomena at all scales—from
-      the world of subatomic particles to the entire universe. Despite the
-      breadth of the subject, the various subfields of physics share a
-      common core. The same basic training in physics will prepare you to
-      work in any area of physics and the related areas of science and
-      engineering. In this section, we investigate the scope of physics;
-      the scales of length, mass, and time over which the laws of physics
-      have been shown to be applicable; and the process by which science
-      in general, and physics in particular, operates.\"
+\"Physics is devoted to the understanding of all natural phenomena.
+In physics, we try to understand physical phenomena at all scales—from
+the world of subatomic particles to the entire universe. Despite the
+breadth of the subject, the various subfields of physics share a
+common core. The same basic training in physics will prepare you to
+work in any area of physics and the related areas of science and
+engineering. In this section, we investigate the scope of physics;
+the scales of length, mass, and time over which the laws of physics
+have been shown to be applicable; and the process by which science
+in general, and physics in particular, operates.\"
 
-      -------------------------------------------------------------------
-      References:
-      -------------------------------------------------------------------
-      Ling, S. J., Sanny, J., &amp; Moebs, W. (2017). University Physics:
-          Volume 1 (Vol. 1). OpenStax, Rice University.
-      -------------------------------------------------------------------
-      """
+-------------------------------------------------------------------
+References:
+-------------------------------------------------------------------
+Ling, S. J., Sanny, J., &amp; Moebs, W. (2017). University Physics:
+  Volume 1 (Vol. 1). OpenStax, Rice University.
+-------------------------------------------------------------------
+"""
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.7"
@@ -52,9 +52,30 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ['physics', 'physics.motion_3d', 'physics.utils']
+#dependencies = ['static', 'templates', 'physics', 'physics_app', 'tests']
+
 
 [project.urls]
 "Homepage" = "https://github.com/dellius-alexander/physics.git"
 "Bug Tracker" = "https://github.com/dellius-alexander/physics.gitt/issues"
 
+# https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
+[project.scripts]
+cli-name = "physics.main:main"
+
+#[project.gui-scripts]
+#
+#[project.entry-points]
+
+
+#[tool.setuptools]
+## By default, include-package-data is true in pyproject.toml, so you do
+## NOT have to specify this line.
+#include-package-data = true
+#
+#[tool.setuptools.packages.find]
+#where = [".", "physics", "physics_app", "templates", "static"]
+#
+#[tool.setuptools.package-data]
+#templates = ["/**/*.txt", "/**/*.rst", "/**/*.html", "*.html"]
+#static = ["js/*.js", "css/*.css", "img/*.png", "img/*.jpg","*.css", "*.js", "*.png", "*.jpg"]
