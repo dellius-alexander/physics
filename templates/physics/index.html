@@ -1,0 +1,106 @@
+<!--
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Physics  Copyright (C) 2022  Dellius Alexander
+
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
+-->
+<!doctype html>
+{% load mathjax %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Physics</title>
+    {#  MathJax script block  #}
+    {% mathjax_scripts %}
+    <script
+            src="https://code.jquery.com/jquery-3.6.1.js"
+            integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+            crossorigin="anonymous">
+
+    </script>
+
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+            crossorigin="anonymous"
+    >
+
+    <!-- Optional theme -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+            integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+            crossorigin="anonymous"
+    >
+    <!-- Latest compiled and minified JavaScript -->
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous">
+
+    </script>
+
+    <style>
+        body{
+            padding-top: 15px;
+            margin-bottom: 100px;
+            background-color: #303030;
+        }
+        .container{
+            margin: 20px auto;
+            left: 0;
+            right: 0;
+            max-width: 60%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 15px;
+        }
+        .top-level-title {
+            margin: 10px auto;
+            left: 0;
+            right: 0;
+            padding: 20px;
+        }
+
+        @media only screen and (max-width: 768px){
+            * {
+                transform: scale(1);
+            }
+            .container{
+                max-width: 100%;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <header>
+        {% load static %}
+        <img src="{% static 'physics/img/../../static/physics/img/logo.png' %}" alt="HYFI Logo">
+    </header>
+    <div class="container" >
+        <h1 class="top-level-title" >Hello World!!!</h1>
+        <div>
+            $$ \vec{r} (t) = x(t) \hat{i} + y(t) \hat{j} + z(t) \hat{k} $$
+        </div>
+    </div>
+</body>
+</html>
