@@ -14,7 +14,9 @@
 # This is free software, and you are welcome to redistribute it
 # under certain conditions; type `show c' for details.
 ##########################################################################
-
+# See setuptools home for more info:
+# https://setuptools.pypa.io/en/latest/userguide/index.html
+##########################################################################
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
