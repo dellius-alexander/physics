@@ -47,7 +47,7 @@ jobs:
             PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
         uses: actions/upload-artifact@v3
         with:  # package-version-python_version
-          name: physics_2211_${{ env.PACKAGE_VERSION }}_${{ matrix.python-version }}
+          name: physics-${{ env.PACKAGE_VERSION }}-${{ matrix.python-version }}
           path: 'dist/'
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
