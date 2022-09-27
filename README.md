@@ -1,8 +1,6 @@
-# Physics
-
 [![Build, Test, Package](https://github.com/dellius-alexander/physics/actions/workflows/build_test_deploy.yml/badge.svg?branch=main)](https://github.com/dellius-alexander/physics/actions/workflows/build_test_deploy.yml)
 
-## Physics
+# Physics
 
 Physics is devoted to the understanding of all natural phenomena.
 In physics, we try to understand physical phenomena at all scales—from
