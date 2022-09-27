@@ -1,15 +1,14 @@
 name: Build, Test, Package
 env:
-  PACKAGE_VERSION: '0.1.1'
+  PACKAGE_VERSION: '1.1'
 on: [push]
-
 jobs:
   build:
 
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.7", "3.8", "3.9"]
 
     steps:
       - uses: actions/checkout@v3

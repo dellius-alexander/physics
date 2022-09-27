@@ -28,6 +28,7 @@ description = "Physics is devoted to the study and understanding of all natural 
 readme = "README.md"
 requires-python = ">=3.7"
 license = { file="LICENSE" }
+
 authors = [
   { name="Dellius Alexander", email="info@hyfisolutions.com", school="Clayton State University", Major="Computer Science"},
 ]
