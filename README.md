@@ -15,6 +15,8 @@ the scales of length, mass, and time over which the laws of physics
 have been shown to be applicable; and the process by which science
 in general, and physics in particular, operates.
 
+---
+
 ## Project Directory Structure
 
 ```text
