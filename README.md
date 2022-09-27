@@ -7,11 +7,16 @@
 
 ```text
 physics
+    setup.cfg
+    MANIFEST.in
     manage.py
     README.md
     development.env  # name=value pair file of environment variables
     requirements.txt
     pyproject.toml
+    LICENSE
+    logging.conf
+    .gitignore
     config/
         __init__.py
         asgi.py
@@ -19,8 +24,14 @@ physics
         settings.py
         urls.py
         wsgi.py
+    static/
+        physics/
+            css/
+            js/
+            img/
     templates/
-        index.html
+        physics/
+            index.html
     physics/
         migrations/
             __init__.py

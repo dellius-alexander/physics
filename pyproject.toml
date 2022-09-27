@@ -24,30 +24,15 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "physics"
 version = "1.1"
-description = """
-\"Physics is devoted to the understanding of all natural phenomena.
-In physics, we try to understand physical phenomena at all scales—from
-the world of subatomic particles to the entire universe. Despite the
-breadth of the subject, the various subfields of physics share a
-common core. The same basic training in physics will prepare you to
-work in any area of physics and the related areas of science and
-engineering. In this section, we investigate the scope of physics;
-the scales of length, mass, and time over which the laws of physics
-have been shown to be applicable; and the process by which science
-in general, and physics in particular, operates.\"
-
--------------------------------------------------------------------
-References:
--------------------------------------------------------------------
-Ling, S. J., Sanny, J., &amp; Moebs, W. (2017). University Physics:
-  Volume 1 (Vol. 1). OpenStax, Rice University.
--------------------------------------------------------------------
-"""
+description = "Physics is devoted to the study and understanding of all natural phenomena."
 readme = "README.md"
 requires-python = ">=3.7"
 license = { file="LICENSE" }
 authors = [
   { name="Dellius Alexander", email="info@hyfisolutions.com", school="Clayton State University", Major="Computer Science"},
+]
+maintainers = [
+    { name="Dellius Alexander", email="info@hyfisolutions.com"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -62,34 +47,4 @@ classifiers = [
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
 [project.scripts]
 cli-name = "physics.main:main"
-#
-#[project.gui-scripts]
-#
-#[project.entry-points]
 
-
-
-## a key whose value is an array of strings. Each string represents
-## a dependency of the project and MUST be formatted as a valid PEP 508
-## string. Each string maps directly to a Requires-Dist entry.
-#[project.dependencies]
-
-## a key whose value is an array of strings. Each string represents
-## a dependency of the project and MUST be formatted as a valid PEP 508
-## string. Each string maps directly to a Requires-Dist entry.
-#[project.optional-dependencies]
-
-### !!!BETA OPTIONS!!!
-#[tool.setuptools]
-#packages = ['physics', 'physics.migrations', 'physics.utils', 'physics_app']
-
-## By default, include-package-data is true in pyproject.toml, so you do
-## NOT have to specify this line.
-#include-package-data = true
-#
-#[tool.setuptools.packages.find]
-#where = [".", "physics", "physics_app", "templates", "static"]
-#
-#[tool.setuptools.package-data]
-#templates = ["/**/*.txt", "/**/*.rst", "/**/*.html", "*.html"]
-#static = ["js/*.js", "css/*.css", "img/*.png", "img/*.jpg","*.css", "*.js", "*.png", "*.jpg"]
