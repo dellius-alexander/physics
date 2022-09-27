@@ -22,9 +22,6 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "physics"
 version = "1.1"
-authors = [
-  { name="Dellius Alexander", email="info@hyfisolutions.com", school="Clayton State University", Major="Computer Science"},
-]
 description = """
 \"Physics is devoted to the understanding of all natural phenomena.
 In physics, we try to understand physical phenomena at all scales—from
@@ -45,15 +42,16 @@ Ling, S. J., Sanny, J., &amp; Moebs, W. (2017). University Physics:
 -------------------------------------------------------------------
 """
 readme = "README.md"
-license = { file="LICENSE" }
 requires-python = ">=3.7"
+license = { file="LICENSE" }
+authors = [
+  { name="Dellius Alexander", email="info@hyfisolutions.com", school="Clayton State University", Major="Computer Science"},
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-#dependencies = ['static', 'templates', 'physics', 'physics_app', 'tests']
-
 
 [project.urls]
 "Homepage" = "https://github.com/dellius-alexander/physics.git"
@@ -62,13 +60,27 @@ classifiers = [
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
 [project.scripts]
 cli-name = "physics.main:main"
-
+#
 #[project.gui-scripts]
 #
 #[project.entry-points]
 
 
+
+## a key whose value is an array of strings. Each string represents
+## a dependency of the project and MUST be formatted as a valid PEP 508
+## string. Each string maps directly to a Requires-Dist entry.
+#[project.dependencies]
+
+## a key whose value is an array of strings. Each string represents
+## a dependency of the project and MUST be formatted as a valid PEP 508
+## string. Each string maps directly to a Requires-Dist entry.
+#[project.optional-dependencies]
+
+### !!!BETA OPTIONS!!!
 #[tool.setuptools]
+#packages = ['physics', 'physics.migrations', 'physics.utils', 'physics_app']
+
 ## By default, include-package-data is true in pyproject.toml, so you do
 ## NOT have to specify this line.
 #include-package-data = true
