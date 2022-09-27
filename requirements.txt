@@ -18,10 +18,9 @@ tomli==2.0.1
 pytest
 flake8~=5.0.4
 asgiref==3.5.2
-backports.zoneinfo
+backports.zoneinfo==0.2.1
 Django>=3.2.15,<=4.1.1
 mysqlclient==2.1.1
 python-dotenv==0.21.0
 sqlparse==0.4.2
-Django-MathJax
-wheel
+Django-MathJax>=0.0.4,<=0.0.8
