@@ -1,0 +1,60 @@
+name: Build, Test, Package
+env:
+  PACKAGE_VERSION: '0.1.1'
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Test with pytest
+        run: |
+           pytest tests/test_3dmotion.py
+           ls -liaR
+
+
+      - name: Build package
+        run: |
+          python -m build  
+
+      - name: Upload build artifacts
+        env:
+            PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
+        uses: actions/upload-artifact@v3
+        with:  # package-version-python_version
+          name: physics_2211_${{ env.PACKAGE_VERSION }}_${{ matrix.python-version }}
+          path: 'dist/'
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
+
+#      # Please see for more information on how to get API tokens to publish package at: https://pypi.org/help/#apitoken
+#      - name: Publish package
+#        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+#        with:
+#          user: __token__
+#          password: ${{ secrets.PYPI_API_TOKEN }}
